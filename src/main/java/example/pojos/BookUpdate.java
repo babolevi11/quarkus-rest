@@ -1,7 +1,7 @@
 package example.pojos;
 
-public class Book {
-    //private long id;
+public class BookUpdate {
+    private Integer id;
     private String title;
     private String author;
     private String pubDate;
@@ -10,9 +10,8 @@ public class Book {
     private String isbn;
     private int quantity;
 
-    public Book() {}
-
-    public Book(String title, String author, String pubDate, float price, String genre, String isbn, int quantity) {
+    public BookUpdate(Integer id, String title, String author, String pubDate, float price, String genre, String isbn, int quantity) {
+        this.id = id;
         this.title = title;
         this.author = author;
         this.pubDate = pubDate;
@@ -22,9 +21,13 @@ public class Book {
         this.quantity = quantity;
     }
 
-    //public long getId() { return id; }
+    public Integer getId() {
+        return id;
+    }
 
-    //public void setId(long id) { this.id = id; }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
