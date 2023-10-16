@@ -13,7 +13,7 @@ public class BookResource {
     public Map<Integer, Book> books = new HashMap<>();
 
     public BookResource() {
-        this.books.put(1, new Book("The Art of Programming", "John Smith", "023-01-15", 49.99F, "Computer Science", "9780123456789", 10));
+        this.books.put(1, new Book("The Art of Programming", "John Smith", "2023-01-15", 49.99F, "Computer Science", "9780123456789", 10));
         this.books.put(2, new Book("The Power of Words", "Emily Johnson", "2022-11-30", 29.99F, "Self-Help", "9789876543210", 5));
         this.books.put(3, new Book("A Journey Through Time", "David Thompson", "2023-03-22", 19.99F, "Fantasy", "9786543210987", 8));
         this.books.put(4, new Book("The Hidden Secrets", "Sarah Roberts", "2023-02-10", 14.99F, "Mystery", "9783210987654", 12));
