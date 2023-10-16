@@ -3,6 +3,7 @@ package example;
 import example.pojos.Book;
 import example.pojos.BookUpdate;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Response;
 
 import java.util.*;
 
@@ -30,12 +31,13 @@ public class BookResource {
 
     @GET
     //@Produces(MediaType.APPLICATION_JSON)
-    public Map<Integer, Book> getBooks() {
-        return books;
+    public Response getBooks() {
+        return Response.ok(books).build();
     }
 
     @POST
-    public Map<Integer, Book> addBook(Book post) {
+    //public Map<Integer, Book> addBook(Book post) {
+    public Response addBook(Book post) {
         //if (!books.stream().filter(book -> book.getId() == post.getId()).findAny().isPresent()) {
         //if (!books.stream().anyMatch(book -> book.getId() == post.getId())) {
         //if (books.stream().noneMatch(book -> book.getId() == post.getId())) {
@@ -47,12 +49,15 @@ public class BookResource {
                 last = key;
             }
             books.put(last + 1, post);
+            return Response.ok(post).status(201).build();
+        } else {
+            //return books;
+            return Response.ok("Duplicate Record!").status(409).build();
         }
-        return books;
     }
 
     @PUT
-    public Map<Integer, Book> updateBook(BookUpdate upd) {
+    public Response updateBook(BookUpdate upd) {
         //Optional<Book> old = books.stream().filter(book -> book.getId() == upd.getId()).findFirst();
         /*
         if (old.isPresent()) {
@@ -60,20 +65,26 @@ public class BookResource {
         }
          */
         //old.ifPresent(book -> books.set(books.indexOf(book), upd));
-        books.replace(upd.getId(), new Book(upd.getTitle(), upd.getAuthor(), upd.getPubDate(), upd.getPrice(), upd.getGenre(), upd.getIsbn(), upd.getQuantity()));
-        return books;
+        if (books.replace(upd.getId(), new Book(upd.getTitle(), upd.getAuthor(), upd.getPubDate(), upd.getPrice(), upd.getGenre(), upd.getIsbn(), upd.getQuantity())) != null) {
+            return Response.ok(books).build();
+        } else {
+            return  Response.ok("Id(" + upd.getId() + ") not found!").status(409).build();
+        }
     }
 
     @DELETE
-    public Map<Integer, Book> deleteBook(BookUpdate del) {
+    public Response deleteBook(BookUpdate del) {
         /*
         if (books.stream().filter(book -> book.getId() == del.getId()).findAny().isPresent()) {
             books.remove(del);
         }
          */
         //books.removeIf(book -> book.getId() == del.getId());
-        books.remove(del.getId());
-        return books;
+        if (books.remove(del.getId()) != null) {
+            return Response.ok(books).build();
+        } else {
+            return  Response.ok("Id(" + del.getId() + ") not found!").status(409).build();
+        }
     }
 
 }
