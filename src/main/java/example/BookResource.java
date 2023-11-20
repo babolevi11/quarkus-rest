@@ -2,6 +2,8 @@ package example;
 
 import example.pojos.Book;
 import example.pojos.BookUpdate;
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 
@@ -21,12 +23,14 @@ public class BookResource {
     }
 
     @GET
+    @RolesAllowed({"user", "admin"})
     //@Produces(MediaType.APPLICATION_JSON)
     public Response getBooks() {
         return Response.ok(books).build();
     }
 
     @POST
+    @RolesAllowed("admin")
     public Response addBook(Book post) {
         if(!books.containsValue(post)) {
             Integer last = 0;
@@ -42,6 +46,7 @@ public class BookResource {
     }
 
     @PUT
+    @RolesAllowed("admin")
     public Response updateBook(BookUpdate upd) {
         if (books.replace(upd.getId(), new Book(upd.getTitle(), upd.getAuthor(), upd.getPubDate(), upd.getPrice(), upd.getGenre(), upd.getIsbn(), upd.getQuantity())) != null) {
             return Response.ok(books).build();
@@ -51,6 +56,7 @@ public class BookResource {
     }
 
     @DELETE
+    @RolesAllowed("admin")
     public Response deleteBook(BookUpdate del) {
         if (books.remove(del.getId()) != null) {
             return Response.ok(books).build();
